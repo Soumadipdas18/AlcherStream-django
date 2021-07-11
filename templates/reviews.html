@@ -1,0 +1,87 @@
+{% extends 'basic.html'%}
+{% block body %}
+{% load static %}
+<nav class="navbar navbar-expand-lg scrolling-navbar" style="background:#333;">
+    <div class="container nav-icon">
+        <a class="navbar-brand" href="../../">
+            <img class="icon-img" src="{% static "images/logo.svg" %}" >
+        </a>
+    </div>
+   <div class="profile">
+        <a class="profile-img" href="../../profile/">
+            <img src={% static "images/profile.svg" %} >
+        </a>
+    </div>
+    <div class="ml-5">
+        <a class="btn btn-info" href="../../" role="button">Back</a>
+    </div>
+</nav>
+<br>
+<section>
+    <div class="container">
+    <h2 style="margin-bottom: 20px; font-weight:bold;" id="blockbuster-1">Reviews of {{review.movie_name}}</h2>
+    <br>
+
+<div class="card card-review">
+  <img class="card-img-top" src="{{review.image}}" style="width: 100%;height: 30vw;object-fit: cover;" onclick="window.open(this.src)" alt="Card image cap">
+  <div class="card-body flex-column d-flex">
+    <h5 class="card-title">{{review.movie_name}}</h5>
+    <p class="card-text">{{review.movie_desc}}</p>
+  </div>
+</div>
+</section>
+<br>
+<hr>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5 col-md-6 col-12 pb-4">
+                <h1>Reviews</h1>
+                {%if comments%}
+                {%for com in comments%}
+                <div class="text-justify mt-4" style="width:100%"> 
+                <img src="https://i.imgur.com/CFpa3nK.jpg" alt="" class="rounded-circle" width="40" height="40">
+                <h4>{{com.who_commented}}</h4> 
+                <span>- {{com.when_commented}}</span> <br><br>
+                <div class="card">
+                <div class="card-body flex-column d-flex">
+                <p class="card-text">{{com.what_commented}}</p></div>
+                </div>
+                {%if user.is_authenticated%}
+                {%ifequal request.user.username com.who_commented%}
+                <a id="delete" role='button' href='../delete/{{com.comment_id}}' class="btn btn-danger mt-2">Delete Review</a>
+                {%endifequal%}
+                {%endif%}
+                </div>
+                <hr>
+                {%endfor%}
+                {%endif%}
+            </div>
+            
+            <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+            {%if user.is_authenticated%}
+            <h4>Leave a review</h4>
+                 <div>Name-{{request.user.username}}</div>
+                <div>Email-{{request.user.email}} </div>
+                <br>
+                <form id="algin-form" action="../postcomment/{{review.image}}" method="POST" > {% csrf_token %}
+                    <div class="form-group">
+                    <textarea name="msg" id="" msg cols="30" rows="5" class="form-control" maxlength="1000" style="background-color: white;" placeholder='Write a review within 1000 words'></textarea>
+                    </div>
+                    <div class="form-group"> 
+                    <button type="submit" id="post" role='button' class="btn btn-info">Post Review</button>
+                    </div>
+                </form>
+            {%else%}
+                <a type="button" class="btn btn-lg btn-info mb-5" href='../../profile' id="submit">
+                    SIGN IN TO POST REVIEW
+                </a>
+            {%endif%}
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

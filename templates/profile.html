@@ -1,0 +1,128 @@
+{% extends 'basic.html'%}
+{% block body %}
+{% load static %}
+<nav class="navbar navbar-expand-lg scrolling-navbar" style="background:#333;">
+    <div class="container nav-icon">
+        <a class="navbar-brand mr-auto" href="../">
+            <img class="icon-img" src="{% static "images/logo.svg" %}" >
+        </a>
+    </div>
+    <div class="ml-auto">
+        <a class="btn btn-info" href="../" role="button">Back</a>
+    </div>
+</nav>
+{% for message in messages  %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <strong>Message : </strong> {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endfor %}
+
+<div class="jumbotron">
+{%if user.is_authenticated%}
+  <h1 class="display-4">Hello, {{request.user.username}}</h1>
+  <p>{{request.user.email}}</p>
+{%else%}
+    <h1 class="display-4">Hello, User</h1>
+    <p>Welcome to AlcherStream.</p>
+{%endif%}
+  <p class="lead">Search for your favorite movies, watch them and submit reviews</p>
+  <hr class="my-4">
+  <p class="lead">
+    {%if user.is_authenticated%}
+    <a href='/logout'>
+        <button type="button" class="btn btn-lg btn-info">
+           Log Out
+        </button>
+    </a>
+    {%else%}
+        <button type="button" class="btn btn-lg btn-info" data-toggle="modal" data-target="#signupModal">Register</button>
+        <button type="button" class="btn btn-lg btn-info" data-toggle="modal" data-target="#loginModal">Login</button>
+    {%endif%}
+    </p>
+</div>
+
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalTitle">Login Here</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/signin" method="POST"> {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="loginusername" name="loginusername"
+                               placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pass">Enter your password </label>
+                        <input type="password" class="form-control" id="loginpassword" name="loginpassword"
+                               placeholder="Enter your password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- sign up -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalTitle">SignUp Here</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/signup" method='post'>{% csrf_token %}
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   placeholder="name@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username"
+                                   placeholder="Choose a unique username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass1">Choose a password</label>
+                            <input type="password" class="form-control" id="pass1" name="pass1"
+                                   placeholder="Choose Your Password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass2">Confirm Password</label>
+                            <input type="password" class="form-control" id="pass2" name="pass2"
+                                   placeholder="Enter your password again" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+

@@ -1,0 +1,49 @@
+{% extends 'basic.html'%}
+{% block body %}
+{% load static %}
+<nav class="navbar navbar-expand-lg scrolling-navbar" style="background:#333;">
+    <div class="container nav-icon">
+        <a class="navbar-brand" href="../../">
+            <img class="icon-img" src="{% static "images/logo.svg" %}" >
+        </a>
+    </div>
+   <div class="profile">
+        <a class="profile-img" href="../../profile/">
+            <img src={% static "images/profile.svg" %} >
+        </a>
+    </div>
+    <div class="ml-5">
+        <a class="btn btn-info" href="../../" role="button">Back</a>
+    </div>
+</nav>
+<div class="mov-container" id="mov-container">
+    <h2 style="margin-bottom: 20px; font-weight:bold;" id="blockbuster-1">FAVORITE MOVIES</h2></div>
+
+<div class="mov-container" id="mov-container">
+
+
+    <div class="row">
+
+        {%for favorite in favorites %}
+        <div class="col-sm-3 ">
+            <div class="card" style="width: 100%; height:100%;">
+                <img class="card-img-top" id="img-{{forloop.counter}}" src={{favorite.image}} alt="Image cannot be loaded"
+                     onclick="window.open(this.src)">
+                <div class="card-body flex-column d-flex">
+                    <h5 class="card-title" id="title-{{forloop.counter}}">{{favorite.movie_name}}</h5>
+                    <p class="card-text" id="desc-{{forloop.counter}}">{{favorite.movie_desc}}</p>
+                    <button type="button" class="btn btn-info mt-auto" onclick="deletefavorite({{forloop.counter}})">Delete from Favorites</button>
+                </div>
+            </div>
+        </div>
+
+        {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
+    </div>
+    <br><br>
+    <div class="row">
+        {% endif %}
+
+
+{%endfor%}
+
+{% endblock %}
