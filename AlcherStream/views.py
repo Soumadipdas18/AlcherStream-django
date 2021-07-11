@@ -31,7 +31,6 @@ def handleSignUp(request):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         myuser = User.objects.create_user(username, email, pass1)
         myuser.save()
-        user=authenticate(username= username, password= pass1)
         messages.success(request, " Your AlcherStream account has been successfully created")
         
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
