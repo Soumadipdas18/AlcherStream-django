@@ -1,1 +1,1 @@
-web: gunicorn AlcherStream.wsgi --log-file-
+web: gunicorn AlcherStream.wsgi --log-file -
